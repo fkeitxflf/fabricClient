@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>申请修改页面响应页面</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+ 
+  <script src="../js/mToken_K1Mgr.js" type="text/javascript"></script>
+  <script src="../js/K1mTokenPluginMgr.js" type="text/javascript"></script>
+  <script src="../js/base64.js" type="text/javascript"></script>
+  <script type = "text/javascript">
+  </script>
+  <body>
+  <object id="mTokenPlugin" type="application/x-mtokenplugin" width="0" height="0">
+    		<param value="pluginLoaded" />
+  </object>
+    	输入请求码：<br>
+    	<textarea  id="request1"  style = "width:500px;height:100px;border:solid 1px #626262;word-wrap:break-word;"></textarea><br>
+		生成解锁码.<br>
+		<p id="response1"  style = "width:500px;height:100px;border:solid 1px #626262;word-wrap:break-word;" ></p>
+		<input type = "button"  onclick = "K1MgrmTokenGenResetpwdResponse();"  value = "点击生成"></input>
+    
+  </body>
+</html>

@@ -1,0 +1,17 @@
+@charset "gbk";
+
+body,form,ul,li,p{ margin:0px; padding:0px; font-size:12px;}
+
+#mainwar{ width:740px; height:340px; top:50%; left:50%;  margin:-170px 0 0 -370px; position:absolute;}
+#leftbox{ float:left}
+#sysname_bj{background-color:#FFFFFF;  width:493px; margin-right:9px; height:74px;  }
+#mainimg{width:493px; height:251px; margin-right:9px; margin-top:9px; }
+	
+#rightbox{ float:left;}
+#topbog{overflow:hidden; height:6px; width:227px;  background:url(../images/login_top.jpg) no-repeat; }
+.twolin{border:1px solid #7B7778; border-bottom:none; border-top:none;}
+#loginfo{padding:0.5em 1em; color:#666; font-family:Arial, Helvetica, sans-serif; text-align:center;border:1px solid #7B7778; border-bottom:none; }
+#botbog{overflow:hidden; height:9px; width:227px;  background:url(../images/login_bot.jpg) no-repeat;}
+#login_in{ padding:1em ;}
+#login_in p{ margin-bottom:3px; clear:both;}
+#login_in p label{ float:left; width:5em; text-align:right; padding-left:0.5em; line-height:2em; }

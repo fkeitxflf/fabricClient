@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 用户信息相关 start -->
+	<bean id="userDao" class="com.lianyg.dao.impl.BaseDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="roleDao" class="com.lianyg.dao.impl.BaseDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="resourceDao" class="com.lianyg.dao.impl.BaseDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="userManagerBase" class="com.lianyg.manager.impl.UserServiceImpl">
+		<property name="userDao" ref="userDao"></property>
+		<property name="roleDao" ref="roleDao"></property>
+	</bean>
+	
+	<bean id="resourceServiceBase" class="com.lianyg.manager.impl.ResourceServiceImpl">
+		<property name="resourceDao" ref="resourceDao"></property>
+	</bean>
+	
+	<bean id="roleServiceBase" class="com.lianyg.manager.impl.RoleServiceImpl">
+		<property name="resourceDao" ref="resourceDao"></property>
+		<property name="roleDao" ref="roleDao"></property>
+	</bean>
+	
+	<!-- 此处为代理 -->
+	<bean name="userService" parent="transactionProxy">
+		<property name="target" ref="userManagerBase"></property>
+	</bean>
+	
+	<bean name="resourceService" parent="transactionProxy">
+		<property name="target" ref="resourceServiceBase"></property>
+	</bean>
+	
+	<bean name="roleService" parent="transactionProxy">
+		<property name="target" ref="roleServiceBase"></property>
+	</bean>
+	<!-- 用户信息相关 end -->
+	
+	<!-- 企业信息相关 start -->
+	<bean id="companyDao" class="com.lianyg.dao.impl.BaseDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="companyServiceBase" class="com.lianyg.manager.impl.CompanyServiceImpl">
+		<property name="companyDao" ref="companyDao"></property>
+	</bean>
+	
+	<bean name="companyService" parent="transactionProxy">
+		<property name="target" ref="companyServiceBase"></property>
+	</bean>
+	<!-- 企业信息相关 end -->
+	
+</beans>

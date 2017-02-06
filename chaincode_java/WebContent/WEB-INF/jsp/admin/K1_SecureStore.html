@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>MyHtml.html</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <script src="../js/client/mToken_K1.js" type="text/javascript"></script>
+ 	<script src="../js/client/K1mTokenPlugin.js" type="text/javascript"></script>
+  	<script src="../js/client/base64.js" type="text/javascript"></script>
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+   <script language="javascript">
+	
+    	
+    	//加载AJAX
+		var xmlhttp ;
+		function loadXMLDoc(url, cfunc) {
+			if(xmlhttp == null) {
+				if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+					xmlhttp = new XMLHttpRequest();
+				} else {// code for IE6, IE5
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+			}
+	
+			xmlhttp.onreadystatechange = cfunc;
+	
+			xmlhttp.open("POST", url, true);
+			xmlhttp.send();
+	
+		}
+    	
+    	//读安全存储区
+    	function OnSecureStoreRead(){
+    		K1mTokenReadSecureStorage();
+    	}
+		
+		//解密安全存储区读取的数据
+		function TriDesDecrypt(){
+			var buffer = document.getElementById("buffer").value;
+			if(buffer == ""){
+				alert("请输入需要解密的内容");
+				return false;
+			}
+			
+			K1mToken.LoadLibrary();
+			var keyNumber = 0;
+			var keyUID = "";
+			keyNumber =  K1mToken.K1_mTokenFindDevice();
+			if(keyNumber < 1)
+			{
+				alert("查找K1失败,错误码:" + K1mToken.K1_mTokenGetLastError());
+	//			document.getElementById("hID").value = "";	
+				return false ;
+			}
+			
+			keyUID = K1mToken.K1_mTokenGetUID(1);
+			if(keyUID == null || keyUID == "")
+			{
+				alert("获取设备唯一硬件ID失败,错误码:" + K1mToken.K1_mTokenGetLastError());
+				return ;
+			}
+			
+			
+			//通过Ajax将安全存储区读取的数据提交到服务端解密
+			loadXMLDoc("../TriDesDecrypt?uid="+keyUID+"&buffer="+encodeURIComponent(buffer), function(){
+					if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+						document.getElementById("buffer").value = xmlhttp.responseText;
+					}
+				});
+		}
+    	
+    	//加密数据
+		function TriDesEncrypt(){
+			var pbuffer = document.getElementById("pbuffer").value;
+			var pbuffer2 =_Base64encode(pbuffer);
+			if(pbuffer == ""){
+				alert("请输入需要解密的内容");
+				return false;
+			}
+			K1mToken.LoadLibrary();
+			var keyNumber = 0;
+			var keyUID = "";
+			keyNumber =  K1mToken.K1_mTokenFindDevice();
+			if(keyNumber < 1)
+			{
+				alert("查找K1失败,错误码:" + K1mToken.K1_mTokenGetLastError());
+	//			document.getElementById("hID").value = "";	
+				return false ;
+			}
+			
+			keyUID = K1mToken.K1_mTokenGetUID(1);
+			if(keyUID == null || keyUID == "")
+			{
+				alert("获取设备唯一硬件ID失败,错误码:" + K1mToken.K1_mTokenGetLastError());
+				return ;
+			}
+			
+			
+			
+			//通过Ajax将安全存储区读取的数据提交到服务端加密
+			loadXMLDoc("../TriDesEncrypt?uid="+keyUID+"&pbuffer="+encodeURIComponent(pbuffer2), function(){
+					if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+						document.getElementById("pbuffer").value = xmlhttp.responseText;
+					}
+				});
+		}
+    	
+    	//写安全存储区
+    	function OnSecureStoreWrite(){
+    		K1mTokenWriteSecureStorag();
+    	}
+	-->
+      </script>
+  
+  
+  <body>
+  <object id="mTokenPlugin" type="application/x-mtokenplugin" width="0" height="0">
+    		<param value="pluginLoaded" />
+ </object>
+  安全存储区操作
+    ，由安全存储区读取的内容均由Key内3DES加密并Base64处理，解密时由服务端解密。进行写安全存储区操作时数据先由服务端加密后再将密文通过接口写入。<br>
+    开始地址：<input name="start" type="text" id="start" value="" size="5">
+  读取长度(最大2048)：<input name="length" type="text" id="length" value="" size="5"> 
+  读取内容：<input name="buffer" type="text" id="buffer" value="" size="50"> 
+  <input type="button" value="读取" onclick="OnSecureStoreRead();"> 
+  <input type="button" name="Submit" value="解密" onclick="TriDesDecrypt();">
+  <br><br>
+  开始地址：<input name="nstart" type="text" id="nstart" value="" size="5">
+  写入内容(最大2048字节)：<input name="pbuffer" type="text" id="pbuffer" value="" size="50">
+  <input type="submit" name="Submit2" value="加密" onclick="TriDesEncrypt();">
+   <input name="button" type="button" onClick="OnSecureStoreWrite();" value="写入">
+  </body>
+</html>
