@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.hyperledger.fabric.sdk.Chain;
+import org.hyperledger.fabric.sdk.FileKeyValStore;
+import org.hyperledger.fabric.sdk.Member;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +34,8 @@ import com.lianyg.util.CommonUtil;
 @Controller
 @RequestMapping("/admin")
 public class LoginController {
+
+	final Logger log = Logger.getLogger(getClass());
 
 	Chain testChain = null;
 
@@ -58,7 +63,9 @@ public class LoginController {
 	@RequestMapping("/login")
 	public Json login(UserDto user, HttpSession session, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-
+		// String filePathConfig = System.getProperty("user.dir") +
+		// "/src/config/log4j.properties";
+		// PropertyConfigurator.configure(filePathConfig);
 		testChain = new Chain("chain1");
 
 		String userName = request.getParameter("userName");
@@ -74,24 +81,19 @@ public class LoginController {
 			j.setMsg("用户校验失败");
 			return j;
 		}
-		// TODO:
-		// try {
-		// testChain.setMemberServicesUrl("grpc://114.215.169.63:7054", null);
-		// testChain.setKeyValStore(new
-		// FileKeyValStore(System.getProperty("D:/test.properties")));
-		// testChain.addPeer("grpc://114.215.169.63:7051", null);
-		// Member registrar = testChain.getMember(userName);
-		// if (!registrar.isEnrolled()) {
-		// registrar = testChain.enroll(userName, password);
-		// }
-		// testChain.setRegistrar(registrar);
-		// } catch (CertificateException | EnrollmentException cex) {
-		// j.setSuccess(false);
-		// // j.setMsg(cex.getMessage());
-		// j.setMsg("用户没有在区块链上校验,验证失败");
-		// return j;
-		// }
-		//
+		testChain.setMemberServicesUrl("grpc://114.215.169.63:7054", null);
+		testChain.setKeyValStore(new FileKeyValStore(System.getProperty("user.home") + "/test.properties"));
+		log.info(System.getProperty("user.home") + "/test.properties");
+		testChain.addPeer("grpc://114.215.169.63:7051", null);
+		Member registrar = testChain.getMember(userName);
+		log.info("a");
+		if (!registrar.isEnrolled()) {
+			log.info("b");
+			registrar = testChain.enroll(userName, password);
+			log.info("c");
+		}
+		testChain.setRegistrar(registrar);
+
 		j.setSuccess(true);
 		// j.setMsg("用户在成员管理模块注册通过,可以登录!");
 

@@ -210,10 +210,10 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 		List<Tree> treeList = new ArrayList<Tree>();
 		String districtSql = null;
 		Query querydistrictList = null;
-		districtSql = "select distinct company.type as type from t_company company order by company.id";
+		districtSql = "select distinct company.type as type from t_company company";
 		querydistrictList = sessionFactory.getCurrentSession().createSQLQuery(districtSql);
 
-		String companySql = "select distinct company.companyId as companyId, company.companyName as companyName from t_company company where company.type = ? order by company.id";
+		String companySql = "select distinct company.companyId as companyId, company.companyName as companyName from t_company company where company.type = ?";
 
 		List<?> districtList = querydistrictList.list();
 		// 查询所有的父结点
