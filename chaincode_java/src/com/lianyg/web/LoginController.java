@@ -63,9 +63,6 @@ public class LoginController {
 	@RequestMapping("/login")
 	public Json login(UserDto user, HttpSession session, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		// String filePathConfig = System.getProperty("user.dir") +
-		// "/src/config/log4j.properties";
-		// PropertyConfigurator.configure(filePathConfig);
 		testChain = new Chain("chain1");
 
 		String userName = request.getParameter("userName");
@@ -75,22 +72,15 @@ public class LoginController {
 		// TODO:Set the password temporary
 		if ("admin".equals(password) && "admin".equals(userName)) {
 			password = "Xurw3yU9zI0l";
-		} else {
-			// TODO:
-			j.setSuccess(false);
-			j.setMsg("用户校验失败");
-			return j;
 		}
+
 		testChain.setMemberServicesUrl("grpc://114.215.169.63:7054", null);
 		testChain.setKeyValStore(new FileKeyValStore(System.getProperty("user.home") + "/test.properties"));
 		log.info(System.getProperty("user.home") + "/test.properties");
 		testChain.addPeer("grpc://114.215.169.63:7051", null);
 		Member registrar = testChain.getMember(userName);
-		log.info("a");
 		if (!registrar.isEnrolled()) {
-			log.info("b");
 			registrar = testChain.enroll(userName, password);
-			log.info("c");
 		}
 		testChain.setRegistrar(registrar);
 
@@ -109,6 +99,7 @@ public class LoginController {
 			sessionInfo.setName(user1.getName());
 			sessionInfo.setResourceList(userService.listResource(user1.getId()));
 			sessionInfo.setResourceAllList(resourceService.listAllResource());
+			sessionInfo.setChain(testChain);
 			session.setAttribute(GlobalConstant.SESSION_INFO, sessionInfo);
 		}
 

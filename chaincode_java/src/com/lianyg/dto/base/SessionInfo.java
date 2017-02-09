@@ -2,6 +2,8 @@ package com.lianyg.dto.base;
 
 import java.util.List;
 
+import org.hyperledger.fabric.sdk.Chain;
+
 public class SessionInfo implements java.io.Serializable {
 
 	private Long id;
@@ -14,6 +16,7 @@ public class SessionInfo implements java.io.Serializable {
 	private String districtname;
 	private String companyname;
 	private String roleid;
+	private Chain chain;
 
 	public String getRoleid() {
 		return roleid;
@@ -57,6 +60,14 @@ public class SessionInfo implements java.io.Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Chain getChain() {
+		return chain;
+	}
+
+	public void setChain(Chain chain) {
+		this.chain = chain;
 	}
 
 	public String getLoginname() {

@@ -4,25 +4,14 @@
 
 <script type="text/javascript">
 jQuery(function($){
-	$('#districtId').combobox({
-		valueField:'districtId', //值字段
-	    textField:'districtName', //显示的字段
-	    url:"${ctx}/district/districtlist.do",
+	$('#companyId').combobox({
+		valueField:'companyId', //值字段
+	    textField:'companyName', //显示的字段
+	    url:"${ctx}/company/companySelect.do?",
 	    method:'get',
 	    panelHeight:'auto',
 	    required:true,
-		editable:false,			
-		onSelect: function(record) {
-			$('#companyId').combobox({
-                valueField:'companyId',
-                textField:'companyName',
-    			method:'get',
-                url:"${ctx}/company/companySelect.do?districtId=" + record.districtId,
-    			fitColumns: true,
-    			striped: true,
-    			editable:false
-			 });
-		}
+		editable:false	
 	});
 });
 
@@ -80,20 +69,8 @@ jQuery(function() {
 					<td><select id="roleIds"  name="roleIds" style="width: 190px" ></select></td>
 				</tr>
 				<tr>
-					<td>区域</td>
-					<td><select id="districtId" name="districtId" style="width: 190px" class="easyui-validatebox" data-options="required:true" style="width: 150px"></select></td>
 					<td>企业</td>
 					<td><select id="companyId" name="companyId" style="width: 190px"></select></td>
-				</tr>
-				<tr>
-					<td>硬件ID</td>
-					<td><input id="serveruid" name="serveruid" type="text" style="width: 190px" placeholder="请输入硬件ID" class="easyui-validatebox" data-options="required:true"></td>
-					<td>种子码</td>
-					<td><input id="serverseed" name="serverseed" type="text" style="width: 190px" placeholder="请输入种子码" class="easyui-validatebox" data-options="required:true"></td>
-				</tr>
-				<tr>
-					<td>3DES密钥</td>
-					<td><input id="trideskey" name="trideskey" type="text" style="width: 190px" placeholder="请输入3DES密钥" class="easyui-validatebox" data-options="required:true"></td>
 				</tr>
 			</table>
 		</form>

@@ -3,6 +3,9 @@ package com.lianyg.web;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.service.spi.ServiceException;
+import org.hyperledger.fabric.sdk.Chain;
+import org.hyperledger.fabric.sdk.Member;
+import org.hyperledger.fabric.sdk.RegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,13 +68,27 @@ public class UserController extends BaseController {
 
 	@RequestMapping("/add")
 	@ResponseBody
-	public Json add(UserDto user) {
+	public Json add(HttpServletRequest request, UserDto user) {
+		SessionInfo sessionInfo = (SessionInfo) request.getSession().getAttribute(GlobalConstant.SESSION_INFO);
 		Json j = new Json();
 		UserDto u = userService.getByLoginName(user);
 		if (u != null) {
 			j.setMsg("用户名已存在!");
 		} else {
 			try {
+				// 用户向区块链上注册
+				Chain testChain = sessionInfo.getChain();
+				Member member = testChain.getMember(user.getLoginname());
+				if (!member.isEnrolled()) {
+					RegistrationRequest req = createRegistrationRequest(member.getName(), "bank_a");
+					member.register(req);
+					member.enroll(member.getEnrollmentSecret());
+
+				} else {
+					j.setSuccess(false);
+					j.setMsg("此用户已经在区块链上登记过,不能重复登记");
+				}
+
 				userService.add(user);
 				j.setSuccess(true);
 				j.setMsg("添加成功！");
@@ -81,6 +98,13 @@ public class UserController extends BaseController {
 
 		}
 		return j;
+	}
+
+	private RegistrationRequest createRegistrationRequest(String enrollmentId, String affiliationId) {
+		RegistrationRequest req = new RegistrationRequest();
+		req.setAffiliation(affiliationId);
+		req.setEnrollmentID(enrollmentId);
+		return req;
 	}
 
 	@RequestMapping("/get")
