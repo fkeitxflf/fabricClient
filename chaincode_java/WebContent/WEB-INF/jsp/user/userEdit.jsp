@@ -4,32 +4,10 @@
 <script type="text/javascript">
 	$(function() {
 	
-		$('#districtId').combobox({
-			valueField:'districtId', //值字段
-		    textField:'districtName', //显示的字段
-		    url:"${ctx}/district/districtlist.do",
-		    method:'get',
-		    panelHeight:'auto',
-		    required:true,
-			editable:false,
-			value : '${user.districtId}',
-			onSelect: function(record) {
-				$('#companyId').combobox({
-	                valueField:'companyId',
-	                textField:'companyName',
-	    			method:'get',
-	                url:"${ctx}/company/companySelect.do?districtId=" + record.districtId,
-	    			fitColumns: true,
-	    			striped: true,
-	    			editable:false
-				 });
-			}
-		});
-		
 		$('#companyId').combobox({
 			valueField:'companyId', //值字段
 		    textField:'companyName', //显示的字段
-		    url:"${ctx}/company/companySelect.do?districtId=" + '${user.districtId}',
+		    url:"${ctx}/company/companySelect.do?",
 		    method:'get',
 		    panelHeight:'auto',
 		    required:true,
@@ -76,11 +54,7 @@
 	$("#name").val('${user.name}');
 	$("#telephone").val('${user.telephone}');
 	$("#roleIds").val('${user.roleIds}');
-	$("#districtId").val('${user.districtId}');
 	$("#companyId").val('${user.companyId}');
-	$("#serveruid").val('${user.serveruid}');
-	$("#serverseed").val('${user.serverseed}');
-	$("#trideskey").val('${user.trideskey}');
 </script>
 <div class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'center',border:false" title="" style="overflow: hidden;padding: 3px;">
@@ -89,7 +63,7 @@
 				<tr>
 					<td>登录名</td>
 					<td><input name="id" type="hidden"  value="${user.id}">
-					<input name="loginname" id="loginname" type="text" style="width: 190px" placeholder="请输入登录名称" class="easyui-validatebox" data-options="required:true"></td>
+					<input name="loginname" id="loginname" type="text" style="width: 190px" disabled="disabled"></td>
 					<td>姓名</td>
 					<td><input name="name" id="name" type="text" style="width: 190px" placeholder="请输入姓名" class="easyui-validatebox" data-options="required:true"></td>
 				</tr>
@@ -100,20 +74,8 @@
 					<td><input  id="roleIds" name="roleIds" style="width: 190px"/></td>
 				</tr>
 				<tr>
-					<td>区域</td>
-					<td><select id="districtId" name="districtId" style="width: 190px" class="easyui-validatebox" data-options="required:true"></select></td>
 					<td>企业</td>
 					<td><select id="companyId" name="companyId" style="width: 190px" class="easyui-validatebox" data-options="required:true"></select></td>
-				</tr>
-				<tr>
-					<td>硬件ID</td>
-					<td><input id="serveruid" name="serveruid" style="width: 190px" type="text" placeholder="请输入硬件ID" class="easyui-validatebox" data-options="required:true"></td>
-					<td>种子码</td>
-					<td><input id="serverseed" name="serverseed" style="width: 190px" type="text" placeholder="请输入种子码" class="easyui-validatebox" data-options="required:true"></td>
-				</tr>
-				<tr>
-					<td>3DES密钥</td>
-					<td><input id="trideskey" name="trideskey" style="width: 190px" type="text" placeholder="请输入3DES密钥" class="easyui-validatebox" data-options="required:true"></td>
 				</tr>
 			</table>
 		</form>

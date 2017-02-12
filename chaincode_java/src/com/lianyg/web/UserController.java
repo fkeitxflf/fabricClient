@@ -88,7 +88,7 @@ public class UserController extends BaseController {
 					j.setSuccess(false);
 					j.setMsg("此用户已经在区块链上登记过,不能重复登记");
 				}
-
+				user.setPassword(member.getEnrollmentSecret());
 				userService.add(user);
 				j.setSuccess(true);
 				j.setMsg("添加成功！");

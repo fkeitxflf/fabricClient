@@ -74,10 +74,10 @@ public class LoginController {
 			password = "Xurw3yU9zI0l";
 		}
 
-		testChain.setMemberServicesUrl("grpc://114.215.169.63:7054", null);
+		testChain.setMemberServicesUrl("grpc://120.27.27.80:7054", null);
 		testChain.setKeyValStore(new FileKeyValStore(System.getProperty("user.home") + "/test.properties"));
 		log.info(System.getProperty("user.home") + "/test.properties");
-		testChain.addPeer("grpc://114.215.169.63:7051", null);
+		testChain.addPeer("grpc://120.27.27.80:7051", null);
 		Member registrar = testChain.getMember(userName);
 		if (!registrar.isEnrolled()) {
 			registrar = testChain.enroll(userName, password);

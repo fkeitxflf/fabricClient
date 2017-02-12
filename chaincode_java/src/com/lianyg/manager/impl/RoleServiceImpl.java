@@ -136,7 +136,7 @@ public class RoleServiceImpl implements RoleServiceI {
 		List<Trole> l = null;
 		List<Tree> lt = new ArrayList<Tree>();
 
-		l = roleDao.find("select distinct t from Trole t order by t.seq");
+		l = roleDao.find("select distinct t from Trole t");
 
 		if ((l != null) && (l.size() > 0)) {
 			for (Trole r : l) {
