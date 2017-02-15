@@ -61,4 +61,17 @@
 	</bean>
 	<!-- 企业信息相关 end -->
 	
+	<!-- 贷款信息相关 start -->
+	<bean id="loanDao" class="com.lianyg.dao.impl.BaseDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="loanServiceBase" class="com.lianyg.manager.impl.LoanServiceImpl">
+		<property name="loanDao" ref="loanDao"></property>
+	</bean>
+	
+	<bean name="loanService" parent="transactionProxy">
+		<property name="target" ref="loanServiceBase"></property>
+	</bean>
+	<!-- 贷款信息相关 end -->
 </beans>

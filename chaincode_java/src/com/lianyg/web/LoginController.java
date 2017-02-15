@@ -1,12 +1,5 @@
 package com.lianyg.web;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +19,6 @@ import com.lianyg.dto.sys.UserDto;
 import com.lianyg.framework.constant.GlobalConstant;
 import com.lianyg.manager.ResourceServiceI;
 import com.lianyg.manager.UserServiceI;
-import com.lianyg.util.CommonUtil;
 
 /**
  * @author hayuan
@@ -74,10 +66,10 @@ public class LoginController {
 			password = "Xurw3yU9zI0l";
 		}
 
-		testChain.setMemberServicesUrl("grpc://120.27.27.80:7054", null);
+		testChain.setMemberServicesUrl("grpc://114.215.169.63:7054", null);
 		testChain.setKeyValStore(new FileKeyValStore(System.getProperty("user.home") + "/test.properties"));
 		log.info(System.getProperty("user.home") + "/test.properties");
-		testChain.addPeer("grpc://120.27.27.80:7051", null);
+		testChain.addPeer("grpc://114.215.169.63:7051", null);
 		Member registrar = testChain.getMember(userName);
 		if (!registrar.isEnrolled()) {
 			registrar = testChain.enroll(userName, password);
@@ -119,34 +111,4 @@ public class LoginController {
 		return j;
 	}
 
-	@RequestMapping(value = "/download")
-	@ResponseBody
-	public String download(HttpServletRequest request, HttpServletResponse response) {
-		response.setCharacterEncoding("utf-8");
-		response.setContentType("multipart/form-data");
-		response.setHeader("Content-Disposition", "attachment;fileName=" + "K1_Setup.exe");
-
-		try {
-			String path = CommonUtil.readProperties("download.path");
-			String filepath = path + "K1_Setup.exe";
-			InputStream inputStream = new FileInputStream(new File(filepath));
-
-			OutputStream os = response.getOutputStream();
-			byte[] b = new byte[2048];
-			int length;
-			while ((length = inputStream.read(b)) > 0) {
-				os.write(b, 0, length);
-			}
-
-			// 这里主要关闭。
-			os.close();
-
-			inputStream.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 }
